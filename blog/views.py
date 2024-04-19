@@ -7,3 +7,7 @@ def index(request):
 
 def about(request):
     return HttpResponse('<h1>About</h1>')
+
+
+def greet(request, name):
+    return HttpResponse(f"<h1>Hello, {name.capitalize()}!</h1>")

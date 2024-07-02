@@ -1,7 +1,6 @@
 {% extends "blog/base.html" %}
 
 {% block content %}
-    <div class="container">
         <h1>Welcome to rybka_website</h1>
         {% for post in posts %}
             <div class="card mb-3">
@@ -14,5 +13,4 @@
                 </div>
             </div>
         {% endfor%}
-    </div>
 {% endblock %}

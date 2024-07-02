@@ -1,12 +1,18 @@
 {% extends "blog/base.html" %}
 
 {% block content %}
-    <center>
-        <h1>Current date is {{ current_date }}</h1>
+    <div class="container">
+        <h1>Welcome to rybka_website</h1>
         {% for post in posts %}
-            <h1>{{ post.title }}</h1>
-        <p>By <b>{{ post.author }}</b> on {{ post.date }}</p>
-            <p>{{ post.content }}</p>
+            <div class="card mb-3">
+                <div class="card-header">
+                    By <b>{{ post.author }}</b> on {{ post.date }}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <p class="card-text">{{ post.content }}</p>
+                </div>
+            </div>
         {% endfor%}
-    </center>
+    </div>
 {% endblock %}

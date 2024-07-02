@@ -5,11 +5,8 @@ from datetime import datetime
 
 
 def index(request):
-    now = datetime.now()
-    current_date = now.date()
     posts = Post.objects.all()
     context = {
-        'current_date': current_date,
         'posts': posts
     }
     return render(request, "blog/index.html", context)

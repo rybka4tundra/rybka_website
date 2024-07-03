@@ -34,8 +34,8 @@ def create_post(request):
         if 'submitted' in request.GET:
             submitted = True
 
-    context = {
-        'form': form,
-        'submitted': submitted
-    }
-    return render(request, "blog/create_post.html", context)
+        context = {
+            'form': form,
+            'submitted': submitted
+        }
+        return render(request, "blog/create_post.html", context)

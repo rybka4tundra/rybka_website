@@ -10,6 +10,8 @@
     <body>
         {% include 'blog/navbar.html' %}
         <div class="container">
+            {% include 'blog/message.html' %}
+
             {% block content %}
             {% endblock %}
         </div>

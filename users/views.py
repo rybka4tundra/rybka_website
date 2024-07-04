@@ -21,3 +21,9 @@ def login_user(request):
             'form': form
         }
         return render(request, 'authentication/login.html', context)
+
+
+def logout_user(request):
+    logout(request)
+    messages.success(request, 'You were successfully logged out!')
+    return redirect('index')

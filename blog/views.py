@@ -1,6 +1,7 @@
 from django.http import HttpResponse
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
+from django.contrib import messages
+
 
 from .models import Post
 from .forms import PostCreateForm
@@ -23,19 +24,15 @@ def greet(request, name):
 
 
 def create_post(request):
-    submitted = False
     if request.method == 'POST':
         form = PostCreateForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/create_post/?submitted=True')
+            messages.success(request, 'You had successfully created a post!')
+            return redirect('index')
     else:
         form = PostCreateForm
-        if 'submitted' in request.GET:
-            submitted = True
-
         context = {
-            'form': form,
-            'submitted': submitted
+            'form': form
         }
         return render(request, "blog/create_post.html", context)

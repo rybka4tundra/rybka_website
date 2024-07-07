@@ -2,7 +2,7 @@
 
 {% block content %}
         <h1>Welcome to rybka_website</h1>
-        {% for post in posts %}
+        {% for post in posts reversed%}
             <div class="card mb-3">
                 <div class="card-header">
                     By <b><!--{{ post.author }}--></b> on {{ post.date }}

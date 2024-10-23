@@ -9,7 +9,7 @@ db.sqlite3-journal
 media
 
 ### venv ###
-rybka_website_env/
+*env/
 
 ### PyCharm ###
 .idea/

@@ -1,7 +1,23 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import UserLoginForm
+from .forms import UserLoginForm, UserRegisterForm
+
+def register_user(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login_user')
+        else:
+            messages.success(request, ('There was an Error during registration, try again.'))
+            return redirect('register_user')
+    else:
+        form = UserRegisterForm()
+        context = {
+            'form': form
+        }
+        return render(request, 'authentication/register.html', context)
 
 
 def login_user(request):

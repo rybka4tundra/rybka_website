@@ -2,7 +2,7 @@
 
 {% block content %}
         <h1>Create new Post</h1>
-        <form action="" method=POST>
+        <form action="" method=POST class="was-validated" novalidate>
             {% csrf_token %}
             {{ form }}
             <input type="submit" value="Submit" class="btn btn-outline-success">

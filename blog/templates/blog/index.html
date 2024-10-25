@@ -2,10 +2,13 @@
 
 {% block content %}
         <h1>Welcome to rybka_website</h1>
+        {% load static %}
         {% for post in posts reversed%}
             <div class="card mb-3">
                 <div class="card-header">
-                    By <b><!--{{ post.author }}--></b> on {{ post.date }}
+                    By <b>{{ post.author.user.username }}</b>
+                    <img src={{ post.author.avatar }} class="rounded-circle" alt="img" style="width: 19px; height: 19px;">
+                    on {{ post.date }}
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">{{ post.title }}</h5>

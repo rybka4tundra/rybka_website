@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
-
+from users.models import Profile
 from .models import Post
 from .forms import PostCreateForm
 
@@ -25,11 +25,19 @@ def greet(request, name):
 
 def create_post(request):
     if request.method == 'POST':
+        if not request.user.is_authenticated:
+            messages.error(request, 'You need to login to create post')
+            return redirect('create-post')
         form = PostCreateForm(request.POST)
         if form.is_valid():
-            form.save()
+            post = form.save(commit=False)
+            post.author = Profile.objects.get(user=request.user)
+            post.save()
             messages.success(request, 'You had successfully created a post!')
             return redirect('index')
+        else:
+            messages.error(request, 'Please fill all the fields')
+            return redirect('create-post')
     else:
         form = PostCreateForm
         context = {

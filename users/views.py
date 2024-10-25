@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+
+from blog.models import Post
 from .forms import UserLoginForm, UserRegisterForm
 from .models import Profile
 
@@ -46,3 +48,12 @@ def logout_user(request):
     logout(request)
     messages.success(request, 'You were successfully logged out!')
     return redirect('index')
+
+def user_profile(request):
+    profile = Profile.objects.get(user=request.user)
+    posts = Post.objects.filter(author=profile)
+    context = {
+        'profile': profile,
+        'posts': posts
+    }
+    return render(request, 'profile/profile.html', context)

@@ -1,0 +1,16 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+<h1>{{ profile.user.username }}</h1>
+<img src={{ profile.avatar }} class="rounded-circle" alt="img" style="width: 256px; height: 256px;">
+
+{% for post in posts reversed%}
+<div class="card mb-3">
+    <div class="card-header"> Posted on {{ post.date }}</div>
+    <div class="card-body">
+        <h5 class="card-title">{{ post.title }}</h5>
+        <p class="card-text">{{ post.content }}</p>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

@@ -17,7 +17,13 @@
           </li>
         </ul>
         {% if user.is_authenticated %}
-          <a class="btn btn btn-secondary" href="{% url 'logout_user' %}" role="button">Log out</a>
+          {% load static %}
+          <div class="d-grid gap-2 d-md-block">
+            <a href="{% url 'user_profile' %}">
+              <img src={{ profile.avatar }} class="rounded-circle" alt="img" style="width: 32px; height: 32px;">
+            </a>
+            <a class="btn btn btn-secondary" href="{% url 'logout_user' %}" role="button">Log out</a>
+          </div>
         {% else %}
         <div class="d-grid gap-2 d-md-block">
           <a class="mr-3 btn btn-outline-success" href="{% url 'login_user' %}" role="button">Log in</a>

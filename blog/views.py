@@ -9,8 +9,14 @@ from .forms import PostCreateForm
 
 def index(request):
     posts = Post.objects.all()
+    if request.user.is_authenticated:
+        profile = Profile.objects.get(user=request.user)
+    else:
+        profile = None
+
     context = {
-        'posts': posts
+        'posts': posts,
+        'profile': profile
     }
     return render(request, "blog/index.html", context)
 

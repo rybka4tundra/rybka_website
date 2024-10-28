@@ -7,9 +7,21 @@
     <div class="card-header text-center">
         <h1>{{ profile.user.username }}</h1>
     </div>
-    <div class="card-body">
-        <img src={{ profile.avatar }} alt="img"
-             style="width: 256px; height: 256px">
+    <div class="d-flex flex-row gap-3 card-body">
+        <div class="card">
+            <img src={{profile.avatar.url}} class="card-img" alt="img"
+                 style="width: 256px; height: 256px">
+        </div>
+        <div class="flex-fill card">
+            <div class="d-flex flex-column card-body">
+                <h1>Bio</h1>
+                <p>{{ profile.bio }}</p>
+                <div class="mt-auto container p-0">
+                    <a class="btn btn-outline-success" href="{% url 'edit_user_profile' %}" role="button">Edit
+                        profile</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

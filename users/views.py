@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 from blog.models import Post
-from .forms import UserLoginForm, UserRegisterForm
+from .forms import UserLoginForm, UserRegisterForm, ProfileEditForm
 from .models import Profile
 
 
@@ -49,6 +50,7 @@ def logout_user(request):
     messages.success(request, 'You were successfully logged out!')
     return redirect('index')
 
+
 def user_profile(request):
     profile = Profile.objects.get(user=request.user)
     posts = Post.objects.filter(author=profile)
@@ -57,3 +59,28 @@ def user_profile(request):
         'posts': posts
     }
     return render(request, 'profile/profile.html', context)
+
+
+@login_required
+def edit_user_profile(request):
+    profile = Profile.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        form = ProfileEditForm(request.POST, request.FILES, instance=profile)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'You had successfully changed your profile!')
+            return redirect('user_profile')
+        else:
+            messages.error(request, 'Please fill right data')
+            return redirect('user_profile')
+    else:
+        form = ProfileEditForm(instance=profile)
+
+
+        context = {
+            'form': form
+        }
+
+        return render(request, "profile/edit_profile.html", context)

@@ -1,8 +1,8 @@
 from users.models import Profile
 
 def profile(request):
-    if request.user.is_authenticated:
-        profile = Profile.objects.get(user=request.user)
-    else:
+    if not request.user.is_authenticated or request.user.is_superuser:
         profile = None
+    else:
+        profile = Profile.objects.get(user=request.user)
     return {'profile': profile}

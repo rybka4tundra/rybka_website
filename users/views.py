@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -51,8 +52,8 @@ def logout_user(request):
     return redirect('index')
 
 
-def user_profile(request):
-    profile = Profile.objects.get(user=request.user)
+def user_profile(request, username):
+    profile = Profile.objects.get(user=User.objects.get(username=username))
     posts = Post.objects.filter(author=profile)
     context = {
         'profile': profile,

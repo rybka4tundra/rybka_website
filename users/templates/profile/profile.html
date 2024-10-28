@@ -17,12 +17,15 @@
         </div>
         <div class="flex-fill card">
             <div class="d-flex flex-column card-body">
-                <h1>Bio</h1>
+                <h3>Bio</h3>
                 <p>{{ profile.bio }}</p>
+
+                {% if user == profile.user %}
                 <div class="mt-auto container p-0">
                     <a class="btn btn-outline-success" href="{% url 'edit_user_profile' %}" role="button">Edit
                         profile</a>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>

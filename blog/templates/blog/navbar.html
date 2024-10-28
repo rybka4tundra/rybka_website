@@ -19,8 +19,8 @@
         {% if user.is_authenticated %}
           {% load static %}
           <div class="d-grid gap-2 d-md-block">
-            <a href="{% url 'user_profile' %}" style="text-decoration: none;">
-              <img src={{profile.avatar.url}} class="rounded-circle" alt="img" style="width: 32px; height: 32px;">
+            <a href="{% url 'user_profile' username=user.username %}" style="text-decoration: none;">
+              <img src={{current_user_profile.avatar.url}} class="rounded-circle" alt="img" style="width: 32px; height: 32px;">
             </a>
             <a class="btn btn btn-secondary" href="{% url 'logout_user' %}" role="button">Log out</a>
           </div>

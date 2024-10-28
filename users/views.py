@@ -72,10 +72,10 @@ def edit_user_profile(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'You had successfully changed your profile!')
-            return redirect('user_profile')
+            return redirect('user_profile', username=request.user.username)
         else:
             messages.error(request, 'Please fill right data')
-            return redirect('user_profile')
+            return redirect('user_profile', username=request.user.username )
     else:
         form = ProfileEditForm(instance=profile)
 

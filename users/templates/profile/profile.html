@@ -10,7 +10,6 @@
     <div class="d-flex flex-column gap-3 card-body">
         <div class="d-flex flex-row container p-0">
             <div class="card">
-
                 <img src={{profile.avatar.url}} class="card-img" alt="img"
                      style="width: 256px; height: 256px">
             </div>
@@ -20,11 +19,25 @@
                 <h3>Bio</h3>
                 <p>{{ profile.bio }}</p>
 
+                {% if user.is_authenticated %}
                 {% if user == profile.user %}
                 <div class="mt-auto container p-0">
                     <a class="btn btn-outline-success" href="{% url 'edit_user_profile' %}" role="button">Edit
                         profile</a>
                 </div>
+                {% else %}
+                {% if is_subscribed %}
+                <form action="{% url 'unsubscribe_from_profile' unsubscribe_from_profile_id=profile.id%}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary">Unsubscribe</button>
+                </form>
+                {% else %}
+                <form action="{% url 'subscribe_to_profile' subscribe_to_profile_id=profile.id%}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-success">Subscribe</button>
+                </form>
+                {% endif %}
+                {% endif %}
                 {% endif %}
             </div>
         </div>

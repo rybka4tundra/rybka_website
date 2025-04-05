@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 from blog.models import Post
 from .forms import UserLoginForm, UserRegisterForm, ProfileEditForm
-from .models import Profile
+from .models import Profile, FollowRelationship
 
 
 def register_user(request):
@@ -55,9 +55,15 @@ def logout_user(request):
 def user_profile(request, username):
     profile = Profile.objects.get(user=User.objects.get(username=username))
     posts = Post.objects.filter(author=profile)
+    if request.user.is_authenticated:
+        is_subscribed = FollowRelationship.objects.filter(follower=Profile.objects.get(user=request.user),
+                                                          target=profile).exists()
+    else:
+        is_subscribed = None
     context = {
         'profile': profile,
-        'posts': posts
+        'posts': posts,
+        'is_subscribed': is_subscribed
     }
     return render(request, 'profile/profile.html', context)
 
@@ -75,13 +81,29 @@ def edit_user_profile(request):
             return redirect('user_profile', username=request.user.username)
         else:
             messages.error(request, 'Please fill right data')
-            return redirect('user_profile', username=request.user.username )
+            return redirect('user_profile', username=request.user.username)
     else:
         form = ProfileEditForm(instance=profile)
-
 
         context = {
             'form': form
         }
 
         return render(request, "profile/edit_profile.html", context)
+
+
+@login_required
+def subscribe_to_profile(request, subscribe_to_profile_id):
+    current_user_profile = Profile.objects.get(user=request.user)
+    subscribe_to_profile = Profile.objects.get(id=subscribe_to_profile_id)
+    FollowRelationship.objects.create(follower=current_user_profile, target=subscribe_to_profile)
+    return redirect('user_profile', username=subscribe_to_profile.user.username)
+
+@login_required
+def unsubscribe_from_profile(request, unsubscribe_from_profile_id):
+    current_user_profile = Profile.objects.get(user=request.user)
+    unsubscribe_from_profile = Profile.objects.get(id=unsubscribe_from_profile_id)
+    follow_relationship = FollowRelationship.objects.get(follower=current_user_profile, target=unsubscribe_from_profile)
+    follow_relationship.delete()
+    messages.success(request, f'You successfully unsubscribed from {unsubscribe_from_profile.user.username}!')
+    return redirect('user_profile', username=unsubscribe_from_profile.user.username)

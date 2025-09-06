@@ -14,18 +14,33 @@
                      style="width: 256px; height: 256px">
             </div>
         </div>
+
         <div class="flex-fill card">
             <div class="d-flex flex-column card-body">
                 <h3>Bio</h3>
+
                 <p>{{ profile.bio }}</p>
+            </div>
+        </div>
+
+        <div class="flex-fill card">
+            <div class="d-flex flex-column card-body">
+                <h3>Subscribers</h3>
+
+                <div class="mb-2">
+                    {% for subscriber in subscribers reversed%}
+                    <div class="d-inline">
+                        <a href="{% url 'user_profile' username=subscriber.user.username %}"
+                           style="text-decoration: none;">
+                            <img src={{subscriber.avatar.url}} class="rounded-circle" alt="img"
+                                 style="width: 32px; height: 32px;">
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
 
                 {% if user.is_authenticated %}
-                {% if user == profile.user %}
-                <div class="mt-auto container p-0">
-                    <a class="btn btn-outline-success" href="{% url 'edit_user_profile' %}" role="button">Edit
-                        profile</a>
-                </div>
-                {% else %}
+                {% if user != profile.user %}
                 {% if is_subscribed %}
                 <form action="{% url 'unsubscribe_from_profile' unsubscribe_from_profile_id=profile.id%}" method="POST">
                     {% csrf_token %}
@@ -41,9 +56,17 @@
                 {% endif %}
             </div>
         </div>
+
+        {% if user.is_authenticated %}
+        {% if user == profile.user %}
+        <div class="mt-auto container p-0">
+            <a class="btn btn-outline-success" href="{% url 'edit_user_profile' %}" role="button">Edit
+                profile</a>
+        </div>
+        {% endif %}
+        {% endif %}
     </div>
 </div>
-
 
 {% for post in posts reversed%}
 <div class="card mb-3">

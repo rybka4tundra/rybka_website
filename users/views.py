@@ -55,6 +55,7 @@ def logout_user(request):
 def user_profile(request, username):
     profile = Profile.objects.get(user=User.objects.get(username=username))
     posts = Post.objects.filter(author=profile)
+    subscribers = [relationship.follower for relationship in FollowRelationship.objects.filter(target=profile)]
     if request.user.is_authenticated:
         is_subscribed = FollowRelationship.objects.filter(follower=Profile.objects.get(user=request.user),
                                                           target=profile).exists()
@@ -63,6 +64,7 @@ def user_profile(request, username):
     context = {
         'profile': profile,
         'posts': posts,
+        'subscribers': subscribers,
         'is_subscribed': is_subscribed
     }
     return render(request, 'profile/profile.html', context)
@@ -98,6 +100,7 @@ def subscribe_to_profile(request, subscribe_to_profile_id):
     subscribe_to_profile = Profile.objects.get(id=subscribe_to_profile_id)
     FollowRelationship.objects.create(follower=current_user_profile, target=subscribe_to_profile)
     return redirect('user_profile', username=subscribe_to_profile.user.username)
+
 
 @login_required
 def unsubscribe_from_profile(request, unsubscribe_from_profile_id):
